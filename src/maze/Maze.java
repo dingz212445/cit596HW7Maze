@@ -217,7 +217,11 @@ public class Maze {
     	if (method.equals("random")) {
     		System.out.println("Solving randomly.");
     		solveRandomMaze();
-    	} else {
+    	} else if (method.equals("dfs")) {
+    		System.out.println("Solving dfs");
+    		solveDFSMaze();
+    	}
+    	else {
     		System.out.println("NonSolved");
     	}
     }
@@ -239,7 +243,6 @@ public class Maze {
             int index = generator.nextInt(neighbors.length);
             current.examine();
             current = neighbors[index];    
-            System.out.println("working");
         }
         visualize(current);
     }
@@ -249,7 +252,33 @@ public class Maze {
      */
     public synchronized void solveDFSMaze() {
         //TODO - do a DFS implementation
-    	
+    	MazeCell source = startCell;
+    	Stack<MazeCell> S = new Stack<>();
+    	source.visit();
+    	S.push(source);
+    	visualize(source);
+    	MazeCell current = source;
+    	while(!S.isEmpty() && current != endCell){
+    		current = S.peek();
+    		MazeCell[] neighbors = current.getNeighbors();
+    		boolean noNeighbors = true;
+    		for (MazeCell tempCell : neighbors) {
+    			if (!tempCell.visited() && !tempCell.examined()) {
+    				current = tempCell;
+    				current.visit();
+    				visualize(current);
+    				S.push(current);
+    				noNeighbors = false;
+    				break;
+    			}
+    		}
+    		if (noNeighbors == true) {
+    			current = S.pop();
+    			current.examine();
+    			visualize(current);
+    		}
+    	}
+    	visualize(current);
     }
 
     /**

@@ -220,8 +220,10 @@ public class Maze {
     	} else if (method.equals("dfs")) {
     		System.out.println("Solving dfs");
     		solveDFSMaze();
-    	}
-    	else {
+    	} else if (method.equals("bfs")) {
+    		System.out.println("Solving bfs");
+    		solveBFSMaze();
+    	} else {
     		System.out.println("NonSolved");
     	}
     }
@@ -288,6 +290,38 @@ public class Maze {
      */
     public synchronized void solveBFSMaze() {
         //TODO - do a BFS implementation
+    	MazeCell source = startCell;
+    	Queue<MazeCell> Q = new LinkedList<>();
+    	source.visit();
+    	source.setPredecessor(null);
+    	Q.add(source);
+    	visualize(source);
+    	MazeCell current = source;
+    	while (!Q.isEmpty() && current != endCell) {
+    		current = Q.poll();
+    		current.visit();
+    		MazeCell[] neighbors = current.getNeighbors();
+    		for (MazeCell tempCell : neighbors) {
+    			if (!tempCell.examined() && !tempCell.visited()) {
+    				tempCell.setPredecessor(current);
+    				visualize(tempCell);
+    				tempCell.visit();
+    				Q.add(tempCell);
+    			}
+    			if (tempCell == endCell) {
+    				current = tempCell;
+    				break;
+    			}
+    		}
+    		
+    	}
+    	current.examine();
+    	while (current != startCell && current != null) {
+    		current = current.getPredecessor();
+    		current.examine();
+    		visualize(current);
+    	}
+    	//visualize(current);
     }
 
 

@@ -22,7 +22,16 @@ public class MazeCell {
     private boolean north, east, south, west;
     private boolean visited, examined;
     private MazeCell neighborN, neighborE, neighborS, neighborW;
-    public MazeCell getNeighborN() {
+    private MazeCell predecessor;
+    public MazeCell getPredecessor() {
+		return predecessor;
+	}
+
+	public void setPredecessor(MazeCell predecessor) {
+		this.predecessor = predecessor;
+	}
+
+	public MazeCell getNeighborN() {
 		return neighborN;
 	}
 
